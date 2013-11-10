@@ -108,7 +108,7 @@ setup(
     license='GPLv3',
     author='Openlabs Technologies & Consulting (P) Limited',
     author_email='info@openlabs.co.in',
-    description='Tryton - Web Framework',
+    description='Tryton - Web Framework Test Supplement',
     long_description=read('README.rst'),
     classifiers=[
         'Development Status :: 4 - Beta',
