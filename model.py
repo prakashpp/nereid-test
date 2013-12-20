@@ -9,3 +9,12 @@ class TestModel(ModelSQL):
     __name__ = "nereid.test.test_model"
 
     name = fields.Char("Name")
+
+    @classmethod
+    def fail_with_transaction_error(cls):
+        """
+        Just fail raising a DatabaseOperationalError
+        """
+        from trytond import backend
+        DatabaseOperationalError = backend.get('DatabaseOperationalError')
+        raise DatabaseOperationalError()
