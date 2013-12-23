@@ -4,76 +4,7 @@
 import re
 import os
 import ConfigParser
-from setuptools import setup, Command
-
-
-class XMLTests(Command):
-    """Runs the tests and save the result to an XML file
-
-    Running this requires unittest-xml-reporting which can
-    be installed using::
-
-        pip install unittest-xml-reporting
-
-    """
-    description = "Run tests with coverage and produce jUnit style report"
-
-    user_options = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        import coverage
-        import xmlrunner
-        cov = coverage.coverage(source=["trytond.modules.nereid_test"])
-        cov.start()
-        from tests import suite
-        xmlrunner.XMLTestRunner(output="xml-test-results").run(suite())
-        cov.stop()
-        cov.save()
-        cov.xml_report(outfile="coverage.xml")
-
-
-class RunAudit(Command):
-    """Audits source code using PyFlakes for following issues:
-        - Names which are used but not defined or used before they are defined.
-        - Names which are redefined without having been used.
-    """
-    description = "Audit source code with PyFlakes"
-    user_options = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        import sys
-        try:
-            import pyflakes.scripts.pyflakes as flakes
-        except ImportError:
-            print "Audit requires PyFlakes installed in your system."
-            sys.exit(-1)
-
-        warns = 0
-        # Define top-level directories
-        dirs = ('.')
-        for dir in dirs:
-            for root, _, files in os.walk(dir):
-                if root.startswith(('./build')):
-                    continue
-                for file in files:
-                    if file != '__init__.py' and file.endswith('.py'):
-                        warns += flakes.checkPath(os.path.join(root, file))
-        if warns > 0:
-            print "Audit finished with total %d warnings." % warns
-        else:
-            print "No problems found in sourcecode."
+from setuptools import setup
 
 
 def read(fname):
@@ -95,9 +26,10 @@ requires = [
 
 for dep in info.get('depends', []):
     if not re.match(r'(ir|res|webdav)(\W|$)', dep):
-        requires.append('trytond_%s >= %s.%s, < %s.%s' %
-                (dep, major_version, minor_version, major_version,
-                    minor_version + 1))
+        requires.append('trytond_%s >= %s.%s, < %s.%s' % (
+            dep, major_version, minor_version,
+            major_version, minor_version + 1)
+        )
 requires.append('trytond >= %s.%s, < %s.%s' %
         (major_version, minor_version, major_version, minor_version + 1))
 
@@ -128,8 +60,8 @@ setup(
     package_dir={
         'trytond.modules.nereid_test': '.',
     },
-    package_data = {
-        'trytond.modules.nereid_test': info.get('xml', []) \
+    package_data={
+        'trytond.modules.nereid_test': info.get('xml', [])
                 + ['tryton.cfg', 'locale/*.po', 'tests/*.rst']
                 + ['templates/*.*', 'templates/tests/*.*'],
     },
@@ -139,8 +71,4 @@ setup(
     [trytond.modules]
     nereid_test = trytond.modules.nereid_test
     """,
-    cmdclass={
-        'xmltests': XMLTests,
-        'audit': RunAudit,
-    },
 )
