@@ -20,14 +20,14 @@
 {{ ngettext('%(num)d apple', '%(num)d apples', apples|count) }}
 
 {# trans: Translation with trans tag #}
-<p>{% trans %}Hola {{ user }}!{% endtrans %}</p>
+<p>{% trans %}Hello {{ username }}!{% endtrans %}</p>
 
 {# trans: Translation with an expression #}
-<p>{% trans user=user.username %}Hello {{ user }}!{% endtrans %}</p>
+<p>{% trans name=user.username %}Hello {{ name }}!{% endtrans %}</p>
 
 {# trans: trans tag with pluralisation #}
 {% trans count=list|length %}
-There is {{ count }} {{ name }} object.
+There is {{ count }} {{ objname }} object.
 {% pluralize %}
-There are {{ count }} {{ name }} objects.
+There are {{ count }} {{ objname }} objects.
 {% endtrans %}
