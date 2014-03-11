@@ -10,6 +10,14 @@
             <field name="url_map" ref="nereid.default_url_map" />
         </record>
 
+        <record id="test_lazy_renderer" model="nereid.url_rule">
+            <field name="rule">/test-lazy-renderer</field>
+            <field name="endpoint">nereid.test.test_model.test_lazy_renderer</field>
+            <field name="sequence" eval="140" />
+            <field name="http_method_get" eval="True"/>
+            <field name="url_map" ref="nereid.default_url_map" />
+        </record>
+
     </data>
 </tryton>
 
